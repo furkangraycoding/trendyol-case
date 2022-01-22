@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+  trendyol-case:
+    image: trendyol-case
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql-db
+
+    environment:
+      - MYSQL_HOST=mysql-db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=admin
+
+  mysql-db:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: 'trendyol'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'admin'
+      MYSQL_ROOT_PASSWORD: 'admin'
+    volumes:
+      - trendyol-case-db:/var/lib/mysql
+
+volumes:
+  trendyol-case-db:
